@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "/Users/yagnikbarasiya23/MYPROJECTS/Personal/PROFILE/components/trace-agent-timeline/trace.css"
+        ],
+        "createdAt": "2026-09-30T04:30:04.167Z",
+        "reason": "Claude: .trace-shimmer is a moving loading highlight on the running 'Thinking' label (a state indicator, removed under reduced motion), shown in the approved preview"
+      }
+    ]
+  }
+}

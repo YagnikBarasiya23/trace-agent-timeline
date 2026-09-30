@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trace — agent run timeline</title>
+  <meta name="description" content="Trace is a zero-dependency agent run timeline: streaming reasoning, tool calls, parallel steps and retries, with adapters for OpenAI, Anthropic and the Vercel AI SDK. MIT licensed.">
+  <meta property="og:title" content="Trace — agent run timeline">
+  <meta property="og:description" content="Show what your agent is doing, step by step. Zero dependencies, MIT.">
+  <meta property="og:image" content="og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./trace.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="#">Trace<span>.</span></a>
+    <nav aria-label="Project">
+      <span class="meta">MIT · 0 deps</span>
+      <a href="https://github.com/YagnikBarasiya23/trace-agent-timeline">GitHub</a>
+      <a href="https://www.yagnikbarasiya.com/components">More components</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="eyebrow">Agent run timeline</p>
+      <h1 id="hero-title">Show the <em>work</em>, not a spinner.</h1>
+      <p class="lede">Reasoning streams in and folds away, tool calls show their input and output, parallel calls run side by side, and failures offer a retry. Adapters read OpenAI, Anthropic and AI SDK streams directly.</p>
+
+      <div class="stage trace-stage">
+        <div id="trace" class="demo-trace"></div>
+        <div class="controls" role="group" aria-label="Run">
+          <button type="button" data-run="agent">Run the agent</button>
+          <button type="button" data-run="failure">Run with a failure</button>
+          <button type="button" data-run="anthropic">Replay an Anthropic stream</button>
+          <button type="button" data-run="clear">Clear</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="usage" aria-labelledby="usage-title">
+      <h2 id="usage-title">Use it</h2>
+<pre><code>&lt;link rel="stylesheet" href="trace.css"&gt;
+&lt;div id="trace" style="height: 360px"&gt;&lt;/div&gt;
+
+&lt;script type="module"&gt;
+  import Trace from './trace.js';
+
+  const trace = new Trace(document.querySelector('#trace'));
+
+  // From a model stream: 'openai', 'anthropic' or 'ai-sdk'
+  await trace.fromEvents(stream, { format: 'anthropic', runTool: (name, args) =&gt; tools[name](args) });
+
+  // …or step by step
+  const call = trace.tool('analytics.summary', { args: { days: 30 } });
+  call.done({ result: { reach: 7200 } });
+  trace.finish('Post scheduled');
+&lt;/script&gt;</code></pre>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>MIT © 2026 <a href="https://www.yagnikbarasiya.com">Yagnik Barasiya</a></span>
+    <span>Respects reduced motion · screen readers hear each step finish</span>
+  </footer>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

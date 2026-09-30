@@ -185,6 +185,7 @@ export function createMapper(format) {
 
 const reduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 let uid = 0;
+const DEFAULT_GROUP = 'Running in parallel';
 
 class Step {
   constructor(trace, { kind, name = '', id, parent = null }) {
@@ -354,7 +355,8 @@ class Step {
       title.textContent = this.state === 'running' ? 'Thinking' : `Reasoned for ${formatDuration(this.elapsed)}`;
       title.classList.toggle('trace-shimmer', this.state === 'running' && !reduced());
     } else if (this.kind === 'parallel') {
-      title.textContent = this.error ? `${this.name} · ${this.error}` : this.name;
+      const label = this.state !== 'running' && this.name === DEFAULT_GROUP ? `Ran ${this.children.length} in parallel` : this.name;
+      title.textContent = this.error ? `${label} · ${this.error}` : label;
     } else {
       title.textContent = this.name;
       title.classList.toggle('trace-mono', this.kind === 'tool');
@@ -472,7 +474,7 @@ export default class Trace {
     return step;
   }
 
-  parallel(name = 'Running in parallel') {
+  parallel(name = DEFAULT_GROUP) {
     return this.#add(new Step(this, { kind: 'parallel', name }));
   }
 
@@ -576,16 +578,19 @@ export default class Trace {
   }
 
   async #run(step, runTool) {
+    // Look the step up again when the tool returns: it may have moved into a parallel group meanwhile.
+    const current = () => this.get(step.id) ?? step;
     try {
-      step.done({ result: await runTool(step.name, step.argsValue) });
+      const result = await runTool(step.name, step.argsValue);
+      current().done({ result });
     } catch (error) {
-      step.fail(error?.message ?? String(error));
+      current().fail(error?.message ?? String(error));
     }
   }
 
   /** Replaces a lone running tool with a parallel group that contains it. */
   #wrap(toolStep) {
-    const group = new Step(this, { kind: 'parallel', name: 'Running in parallel' });
+    const group = new Step(this, { kind: 'parallel', name: DEFAULT_GROUP });
     this.list.replaceChild(group.el, toolStep.el);
     this.#steps.delete(toolStep.id);
     this._register(group);
