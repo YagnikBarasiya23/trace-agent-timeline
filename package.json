@@ -1,0 +1,26 @@
+{
+  "name": "trace-agent-timeline",
+  "version": "1.0.0",
+  "description": "An agent run timeline: streaming reasoning, tool calls, parallel steps and retries, with adapters for OpenAI, Anthropic and the Vercel AI SDK. Zero dependencies.",
+  "type": "module",
+  "main": "trace.js",
+  "exports": {
+    ".": "./trace.js",
+    "./trace.css": "./trace.css"
+  },
+  "files": ["trace.js", "trace.css"],
+  "keywords": ["ai", "agent", "timeline", "tool-calls", "reasoning", "streaming", "openai", "anthropic", "vanilla-js"],
+  "author": "Yagnik Barasiya (https://www.yagnikbarasiya.com)",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/YagnikBarasiya23/trace-agent-timeline.git" },
+  "homepage": "https://yagnikbarasiya23.github.io/trace-agent-timeline/",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test test/*.test.js"
+  },
+  "devDependencies": {
+    "vite": "^8.3.0"
+  }
+}
